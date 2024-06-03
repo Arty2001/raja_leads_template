@@ -2,7 +2,7 @@ import "./index.module.css";
 // import LogoSVG from "./logo.svg";
 import "@mantine/core/styles.css";
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { useMediaQuery } from "@mantine/hooks";
+import { useMediaQuery } from "@mui/material";
 import React from "react";
 import { Nunito } from 'next/font/google';
 
