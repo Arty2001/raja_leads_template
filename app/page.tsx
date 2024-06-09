@@ -1,6 +1,5 @@
-import "./index.module.css";
-// import LogoSVG from "./logo.svg";
-import "@mantine/core/styles.css";
+'use client'
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import { useMediaQuery } from "@mui/material";
 import React from "react";
@@ -79,10 +78,10 @@ const defaultTheme = createTheme({
 });
 
 function App() {
-  const matches = useMediaQuery("(min-width: 56.25em)"); //true if mobile false if not
+  const matches = useMediaQuery("(min-width: 56.25em)"); //true if desktop false if not
 
   return <ThemeProvider theme={defaultTheme}>
-    <div> {matches ? 'Mobile' : 'Desktop'} </div>
+    <div> {matches ? 'Desktop' : 'Mobile'} </div>
   </ThemeProvider>
 }
 

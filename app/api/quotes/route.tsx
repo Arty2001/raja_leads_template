@@ -15,7 +15,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json(quotes, {status:200})
   } catch (error) {
     console.error('Error fetching quotes:', error);
-    return NextResponse.json({error}, {status:200})
+    return NextResponse.json({error}, {status:500})
   }
 }
 
