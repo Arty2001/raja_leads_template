@@ -11,8 +11,8 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" style={{ scrollSnapType: 'y mandatory' }}>
+      <body style={{margin: 0, padding: 0}}>
           <Providers>{children}</Providers>
         </body>
     </html>
