@@ -5,6 +5,9 @@ import NextAuth, {
   import Credentials from "next-auth/providers/credentials";
   import { userService } from "./services/userService";
   
+  if (!process.env.NEXTAUTH_SECRET){
+    throw new Error('Invalid/Missing NEXTAUTH_SECRET secret key');
+  }
   const authOptions: NextAuthOptions = {
     session: {
       strategy: "jwt", //(1) the default is jwt when no adapter defined, we redefined here to make it obvious what strategy that we use 
@@ -49,4 +52,4 @@ import NextAuth, {
   
   const handler = NextAuth(authOptions);
     
-  export { handler as GET, handler as POST };
+  export { handler as GET, handler as POST, authOptions };

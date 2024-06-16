@@ -3,9 +3,24 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { ObjectId } from 'mongodb';
 import clientPromise from '../../../lib/mongodb'; // Update the path to your MongoDB setup file
+import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
+
 
 export async function GET(req: NextRequest) {
   try {
+    console.log("REQUEST",req);
+    const session= await getServerSession();
+    //console.log("SESSION:", session)
+    
+    if (process.env.DEV_MODE !== "true") {
+      if(!session)
+        {
+          return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+        }
+    }
+
+    
     const client = await clientPromise;
     const db = client.db();
     const quotesCollection = db.collection('quotes');
