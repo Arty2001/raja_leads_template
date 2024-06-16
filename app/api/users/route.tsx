@@ -3,6 +3,8 @@
 import { NextRequest, NextResponse } from 'next/server';
 import clientPromise from '../../../lib/mongodb'; // Update the path to your MongoDB setup file
 import bcrypt from "bcryptjs";
+import { authOptions } from "../auth/[...nextauth]/route";
+import { getServerSession } from "next-auth";
 
 export async function POST(req: NextRequest) {
     try {
@@ -44,4 +46,31 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error }, { status: 500 });
     }
   }
+  
+
+  export async function GET(req: NextRequest) {
+
+    try{
+    console.log("REQ",req)
+    const session = await getServerSession(authOptions);
+    console.log("SESSION:", session)
+   
+    if (!session) {
+        return NextResponse.json({ message: "Unauthorized" }, { status: 401 });
+      }
+    
+    const client = await clientPromise;
+    const db = client.db();
+    const usersCollection = db.collection('users');
+
+    const users = await usersCollection.find({}).toArray();
+    return NextResponse.json(users, {status:200})
+  } catch (error) {
+    console.error('Error fetching users:', error);
+    return NextResponse.json({error}, {status:500})
+  }
+
+  }
+    
+
   
