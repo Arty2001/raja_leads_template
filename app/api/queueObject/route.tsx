@@ -21,8 +21,12 @@ export async function GET(req: NextRequest) {
         if (!queueObject) {
           return NextResponse.json({ message: 'queueObject not found' }, { status: 404 });
         }
-  
-        return NextResponse.json(queueObject, { status: 200 });
+        // To fetch leads related to the current queueObject 
+        //TODO: Ensure what we will do in the case where the lead DOESN'T get passed to her team and she keeps them
+        const leadsCollection = db.collection('leads');
+        const leads = await leadsCollection.find({ queueObjectId: new ObjectId(id) }).toArray();
+
+        return NextResponse.json({ ...queueObject, leads }, { status: 200 });
       } else {
         // If no ID is provided, fetch all queueObject
         const queueObject = await queueObjectCollection.find({}).toArray();

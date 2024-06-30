@@ -57,7 +57,8 @@ export async function POST(req: NextRequest) {
       'typeOfPlacement',
       'numberOfYears',
       'status',
-      'dateSubmitted'
+      'dateSubmitted',
+      'queueObjectId'
     ];
     const missingKeys = requiredKeys.filter(key => !(key in data));
     if (missingKeys.length > 0) {
@@ -127,6 +128,7 @@ export async function POST(req: NextRequest) {
       numberOfYears: data['numberOfYears'],
       status: data['status'],
       dateSubmitted: new Date(),
+      queueObjectId: new ObjectId(data['queueObjectId'])
     });
 
     console.log({ data });
