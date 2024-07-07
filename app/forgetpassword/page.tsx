@@ -10,23 +10,48 @@ import Box from '@mui/material/Box';
 import {IconLockAccess} from '@tabler/icons-react';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from 'next/link';
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-
-
-export default function SignIn() {
+export default function ForgotPassword() {
+  const [error, setError] = useState('');
+  const [successMessage, setSuccessMessage] = useState('');
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  const router = useRouter();
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
+    const email = data.get('email');
     console.log({
       email: data.get('email'),
-      password: data.get('password'),
     });
-    await signIn("credentials",{
-      username: data.get('email'),
-      password: data.get('password'),
-      callbackUrl:"/dashboard",
-    })
+
+  try {
+      const res = await fetch("/api/forgetpassword", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email,
+        }),
+      });
+      if (res.status === 400) {
+        setError("This email does not exist");
+        setSuccessMessage("Invalid email address");
+
+      }
+      if (res.status === 200) {
+        setError("");
+        setSuccessMessage("Email has been sent successfully");
+        setIsSubmitted(true);
+        //router.push("/login");
+
+      }
+    } catch (error) {
+      setError("Error, try again");
+      console.log(error);
+    }
   };
 
   return (
@@ -45,7 +70,7 @@ export default function SignIn() {
             <IconLockAccess />
           </Avatar>
           <Typography component="h1" variant="h5">
-            Sign in
+            Forget Password
           </Typography>
           <Box component="form" onSubmit={handleSubmit} noValidate sx={{ mt: 1 }}>
             <TextField
@@ -58,33 +83,17 @@ export default function SignIn() {
               autoComplete="email"
               autoFocus
             />
-            <TextField
-              margin="normal"
-              required
-              fullWidth
-              name="password"
-              label="Password"
-              type="password"
-              id="password"
-              autoComplete="current-password"
-            />
-            <div>
-              <p className='text-black text-[16px] mb-4'>
-                Forget Password?
-                <Link
-                  href="/forgetpassword"
-                  className="ml-2 text-blue-500 hover:underline"
-                >Reset Here</Link>
-              </p>
-            </div>
+            {successMessage && <Typography color="primary">{successMessage}</Typography>}
+            {!isSubmitted && (
             <Button
               type="submit"
               fullWidth
               variant="contained"
               sx={{ mt: 3, mb: 2 }}
             >
-              Sign In
+              SUBMIT
             </Button>
+            )}
           </Box>
         </Box>
       </Container>
