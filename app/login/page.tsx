@@ -10,6 +10,9 @@ import Box from '@mui/material/Box';
 import {IconLockAccess} from '@tabler/icons-react';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Link from 'next/link';
+
+
 
 export default function SignIn() {
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -65,6 +68,15 @@ export default function SignIn() {
               id="password"
               autoComplete="current-password"
             />
+            <div>
+              <p className='text-black text-[16px] mb-4'>
+                Forget Password?
+                <Link
+                  href="/forgetpassword"
+                  className="ml-2 text-blue-500 hover:underline"
+                >Reset Here</Link>
+              </p>
+            </div>
             <Button
               type="submit"
               fullWidth
